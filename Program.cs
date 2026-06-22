@@ -108,7 +108,14 @@ namespace MaichartConverter
         /// <returns>ProperCommands</returns>
         public static IEnumerable<ConsoleCommand> GetCommands()
         {
-            return ConsoleCommandDispatcher.FindCommandsInSameAssemblyAs(typeof(Program));
+            return
+            [
+                new CompileDatabase(),
+                new CompileMa2(),
+                new CompileMa2ID(),
+                new CompileSimai(),
+                new ReverseMa2FromSimaiDatabase()
+            ];
         }
 
         /// <summary>
@@ -222,7 +229,10 @@ namespace MaichartConverter
                 Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
                 WriteIndented = true,
             };
-            sw.WriteLine(JsonSerializer.Serialize(new SortedDictionary<int, string>(CompiledTracks), JsonOptions));
+            sw.WriteLine(JsonSerializer.Serialize(
+                new SortedDictionary<int, string>(CompiledTracks),
+                typeof(SortedDictionary<int, string>),
+                new MaichartConverterJsonContext(JsonOptions)));
             sw.Close();
         }
 
@@ -271,7 +281,10 @@ namespace MaichartConverter
             {
                 Directory.CreateDirectory($"{outputLocation}/{group.name}");
                 StreamWriter sw = new($"{outputLocation}/{group.name}/manifest.json", false);
-                sw.WriteLine(JsonSerializer.Serialize(group, JsonOptions));
+                sw.WriteLine(JsonSerializer.Serialize(
+                    group,
+                    typeof(TrackGroup),
+                    new MaichartConverterJsonContext(JsonOptions)));
                 sw.Close();
             }
         }

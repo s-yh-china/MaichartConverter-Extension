@@ -29,3 +29,20 @@
 - `-s | --shift <int>`: Shifts notes in all charts front or back by given ticks.
 - `-o | --output <path>`: Path to output folder. Program will try to write to this path and create new folder when
   necessary so make sure you have write permission of the given folder.
+
+## Mine / SV / HS extensions
+
+This command can read and preserve custom records used by `SinmaiMineNote`:
+
+- Mine aliases such as `MINE_NMTAP`, `MINE_NMHLD`, `MINE_NMSTR`, `MINE_NMTTP`, `MINE_NMTHO`, `MN*`, and `MI*`.
+- SV records in change-point form `SV	<bar>	<grid>	<speed>` and explicit segment form
+  `SV	<bar>	<grid>	<endBar>	<endGrid>	<speed>`. `SVEL`, `SVELC`, and `SOFLAN` are accepted as input aliases.
+- HS records in change-point form `HS	<bar>	<grid>	<speed>`. `HSP`, `HSPD`, `HSPEED`, and `HISPEED` are accepted as
+  input aliases.
+- Per-note inline HS before note tags, such as `<HS*2>NMTAP	0	0	0` and `<HS*0.75>MINE_NMTAP	0	96	1`.
+  `MINE_<HS*speed>...` is accepted for compatibility and normalized on output.
+
+When compiling back to `Ma2_104`, Mine records are normalized to `MINE_<nativeTag>`, SV records are normalized to
+`SV`, HS records are normalized to `HS`, and inline HS is written before the note tag. When compiling to Simai, Mine
+notes are written with the `m` marker, SV changes as `(SV:<speed>)`, HS changes as `(HS:<speed>)`, and per-note HS as
+`<HS*speed>`.

@@ -1,15 +1,23 @@
-# MaichartConverter
+# MaichartConverter-Extension
 
 ## A simple program provide functionality of converting maimai chart between Simai and Ma2.
 
 > The original supporting classes are now separated from this repo. Please
-> see [MaiLib](https://github.com/Neskol/MaiLib) for more information.
+> see [MaiLib-Extension](https://github.com/s-yh-china/MaiLib-Extension) for more information.
 
 ### Build
 
-    git clone
-    git submodule update --init --recursive
-    dotnet build
+```text
+git clone
+git submodule update --init --recursive
+dotnet build
+```
+
+### Publish
+
+```text
+dotnet publish -c Release -r win-x64
+```
 
 ### Usage & Available Commands
 
@@ -45,9 +53,25 @@ Reverse Simai Database from given folder to MaiAnalysis folder for compilation
   so there is a HUGE amount of compromises in code design which made it hard to read (but works so far). It would be
   most kind of you if you would like to help me to fix that
 
+### Mine, SV, and HS extension notes
+
+Sinmai Mod [SinmaiMineNote](https://github.com/s-yh-china/SinmaiMineNote) Support.
+
+- Simai input accepts Mine notes by adding `m`, `@mine`, or `#mine` to a note token. Examples: `1m`, `2hm[4:1]`,
+  `3m-5[4:1]` for a Mine slide head, `3-5[4:1]m` for a Mine slide tail, and `A1m`. Mine marks are preserved when
+  composing Simai.
+- Simai input accepts scroll velocity changes as timing tokens: `(SV:<speed>)`, `(SVEL:<speed>)`, `(SVELC:<speed>)`,
+  or `(SOFLAN:<speed>)`. `1.0` is normal speed, `0.5` is half speed, `0.0` is stop.
+- Simai input accepts HS visual speed changes as timing tokens such as `(HS:<speed>)`, and per-note inline HS as
+  `<HS*speed>` before a note token. Examples: `(HS:0.5)`, `<HS*2>1`, `<HS*1.5>2m`, and `<HS*0.75>3-5[4:1]`.
+- Ma2 input accepts the custom Mine/SV/HS records documented by `SinmaiMineNote`, including `MINE_*`, `MN*`, `MI*`,
+  `SV`, `SVEL`, `SVELC`, `SOFLAN`, `HS`, `HSP`, `HSPD`, `HSPEED`, and `HISPEED`. Mine notes are emitted with `MINE_`
+  prefixes, SV changes are emitted as `SV` records, HS changes are emitted as `HS` records, and per-note HS is emitted
+  as `<HS*speed>` before the MA2 note tag. `Ma2_104` is the recommended target for SinmaiMineNote.
+
 ### Disclaimer
 
 - Copyrights of the works belong to each individual right holders. This tool is purely used as non-commercial and study
   purpose. You should find your way for any resource might be used and properly use at your own risk.
-- If you would like to use the parser in your project, please refer [MaiLib](https://github.com/Neskol/MaiLib) and
+- If you would like to use the parser in your project, please refer [MaiLib-Extension](https://github.com/s-yh-china/MaiLib-Extension) and
   hopefully that helps!
